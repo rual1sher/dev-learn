@@ -1,0 +1,6 @@
+# Cursor & Copilot Rules for DevLearn
+
+MANDATORY RULE:
+Whenever making changes to this codebase (code, architecture, dependencies, files):
+You MUST log every change into `CHANGELOG.md` following the format specified in `AGENTS.md`.
+Never finish your task without updating `CHANGELOG.md` if any files were changed.
