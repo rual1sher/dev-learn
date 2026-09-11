@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { StyleSheet, TouchableOpacity, Animated, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-export default function AnimatedChoiceButton({ type, onPress, title, subtitle, disabled }) {
+export default function AnimatedChoiceButton({ type, onPress, title, subtitle, disabled, hotkey }) {
   const btnHop = useRef(new Animated.Value(0)).current;
   const btnRot = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -64,6 +64,11 @@ export default function AnimatedChoiceButton({ type, onPress, title, subtitle, d
         </Animated.View>
         <Text style={styles.decisionBtnText}>{title}</Text>
         {subtitle ? <Text style={styles.decisionSubText}>{subtitle}</Text> : null}
+        {hotkey ? (
+          <Animated.View style={styles.hotkeyBadge}>
+            <Text style={styles.hotkeyText}>{hotkey}</Text>
+          </Animated.View>
+        ) : null}
       </TouchableOpacity>
     </Animated.View>
   );
@@ -72,8 +77,9 @@ export default function AnimatedChoiceButton({ type, onPress, title, subtitle, d
 const styles = StyleSheet.create({
   brutalDecisionBtn: {
     flex: 1,
-    minHeight: 76,
+    minHeight: 82,
     paddingVertical: 10,
+    paddingHorizontal: 8,
     borderRadius: 18,
     borderWidth: 3,
     borderColor: '#000',
@@ -95,7 +101,7 @@ const styles = StyleSheet.create({
     opacity: 0.35,
   },
   decisionBtnText: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '900',
     color: '#000',
     marginTop: 2,
@@ -106,7 +112,26 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: '#000',
     marginTop: 1,
-    opacity: 0.8,
+    opacity: 0.85,
     letterSpacing: 0.5,
+  },
+  hotkeyBadge: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
+    borderColor: '#000000',
+    borderRadius: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 1,
+    marginTop: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+  },
+  hotkeyText: {
+    fontSize: 10,
+    fontWeight: '900',
+    color: '#000',
+    letterSpacing: 0.4,
   },
 });
