@@ -24,7 +24,8 @@
     "pm2:start:tunnel": "pm2 start ecosystem.config.js --only devlearn-mobile-tunnel --env production",
     "pm2:stop": "pm2 stop ecosystem.config.js",
     "pm2:logs": "pm2 logs devlearn-api",
-    "pm2:logs:tunnel": "pm2 logs devlearn-mobile-tunnel"
+    "pm2:logs:tunnel": "pm2 logs devlearn-mobile-tunnel --lines 80",
+    "pm2:qr": "tail -n 45 mobile-app/logs/pm2-tunnel-out.log"
   },
   "devDependencies": {
     "concurrently": "^9.2.4"

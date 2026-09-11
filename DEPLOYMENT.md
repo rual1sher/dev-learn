@@ -134,7 +134,11 @@ npm run pm2:stop            # Остановка всех процессов
 - **Через PM2 (в фоне с авторестартом):**
   ```bash
   npm run pm2:start:tunnel
-  npm run pm2:logs:tunnel   # покажет QR-код и URL вида exp://...ngrok-free.app
+  npm run pm2:logs:tunnel   # покажет QR-код и URL вида exp://... (выводит 80 строк)
+  # или прямой быстрый просмотр QR-кода из логов:
+  npm run pm2:qr
+  # или:
+  cat mobile-app/logs/pm2-tunnel-out.log
   ```
 - **Или интерактивно в консоли / tmux:**
   ```bash
