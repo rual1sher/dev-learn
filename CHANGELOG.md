@@ -21,6 +21,18 @@
 
 ## 📝 История изменений
 
+### [2026-09-11 11:36] Единые команды для одновременного запуска API, Mobile и Web (dev:all, dev:all:tunnel, prod:all)
+- **Автор:** AI (Antigravity) & Разработчик (alisher)
+- **Тип:** Новая фича | DX (Developer Experience)
+- **Затронутые модули/файлы:** `package.json`, `mobile-app/package.json`, `README.md`, `DEPLOYMENT.md`, `CHANGELOG.md`
+- **Что сделано:**
+  - Обновлена команда `npm run dev` и добавлена `npm run dev:all` для одновременного запуска Backend API на порту 3001, генерации QR-кода Metro для смартфона (Expo Go) и автоматического открытия Web-клиента в браузере (`http://localhost:8081`).
+  - Добавлена команда `npm run dev:all:tunnel`, объединяющая запуск API, Web-версии и глобального туннеля `--tunnel` для Expo Go.
+  - В `mobile-app/package.json` добавлены вспомогательные скрипты `tunnel:web` и `tunnel`.
+  - Добавлена продакшн-команда `npm run prod:all` для параллельного запуска Express-сервера (раздающего API и скомпилированный Web SPA на порту 3001) и Expo Go Mobile Tunnel.
+  - Обновлена документация в `README.md` и `DEPLOYMENT.md`.
+- **Архитектурные последствия:** Разработчику больше не нужно запускать несколько терминалов — все три платформы (API, Mobile через Expo Go и Web SPA) запускаются ровно одной командой как в dev, так и в prod.
+
 ### [2026-09-11 11:21] Добавление запуска мобильного приложения с флагом --tunnel для Expo Go
 - **Автор:** AI (Antigravity) & Разработчик (alisher)
 - **Тип:** Новая фича | Развертывание | Зависимости

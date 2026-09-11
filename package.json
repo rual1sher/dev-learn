@@ -5,7 +5,9 @@
   "description": "DevLearn Platform: Unified Workspace (API + Cross-platform Mobile & Web App)",
   "scripts": {
     "install:all": "npm install && npm install --prefix api && npm install --prefix mobile-app",
-    "dev": "concurrently --names \"API,APP\" --prefix-colors \"cyan,yellow\" \"npm run dev --prefix api\" \"npm run start --prefix mobile-app\"",
+    "dev": "concurrently --names \"API,APP\" --prefix-colors \"cyan,yellow\" \"npm run dev --prefix api\" \"npm run web --prefix mobile-app\"",
+    "dev:all": "concurrently --names \"API,APP\" --prefix-colors \"cyan,yellow\" \"npm run dev --prefix api\" \"npm run web --prefix mobile-app\"",
+    "dev:all:tunnel": "concurrently --names \"API,APP\" --prefix-colors \"cyan,yellow\" \"npm run dev --prefix api\" \"npm run tunnel:web --prefix mobile-app\"",
     "dev:api": "npm run dev --prefix api",
     "dev:mobile": "npm run start --prefix mobile-app",
     "dev:mobile:tunnel": "npm run tunnel --prefix mobile-app",
@@ -14,6 +16,7 @@
     "tunnel:prod": "npm run tunnel:prod --prefix mobile-app",
     "dev:web": "npm run web --prefix mobile-app",
     "build:web": "npm run build:web --prefix mobile-app",
+    "prod:all": "concurrently --names \"API+WEB,MOBILE\" --prefix-colors \"cyan,magenta\" \"npm run start:prod\" \"npm run tunnel:prod\"",
     "start:prod": "NODE_ENV=production node api/server.js",
     "check:prod": "node scripts/prod-check.js",
     "pm2:start": "pm2 start ecosystem.config.js --env production",

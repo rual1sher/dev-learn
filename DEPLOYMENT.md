@@ -138,7 +138,9 @@ npm run pm2:stop            # Остановка всех процессов
   ```
 - **Или интерактивно в консоли / tmux:**
   ```bash
-  npm run tunnel:prod       # запуск в оптимизированном продакшн-режиме (--no-dev --minify)
+  npm run tunnel:prod       # запуск мобильного тоннеля (--no-dev --minify)
+  # или все сервисы сразу (API + Web SPA + Mobile Tunnel):
+  npm run prod:all
   ```
 
 ### 3. Настройка Nginx Reverse Proxy
