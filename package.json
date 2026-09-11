@@ -26,7 +26,10 @@
     "pm2:logs": "pm2 logs devlearn-api",
     "pm2:logs:tunnel": "pm2 logs devlearn-mobile-tunnel --lines 80",
     "pm2:qr": "node scripts/show-qr.js",
-    "qr": "node scripts/show-qr.js"
+    "qr": "node scripts/show-qr.js",
+    "login": "npm run login --prefix mobile-app",
+    "whoami": "npm run whoami --prefix mobile-app",
+    "logout": "npm run logout --prefix mobile-app"
   },
   "devDependencies": {
     "concurrently": "^9.2.4"

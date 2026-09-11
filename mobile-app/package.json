@@ -28,6 +28,9 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build:web": "npx expo export --platform web",
+    "login": "expo login",
+    "whoami": "expo whoami",
+    "logout": "expo logout",
     "qr": "node -e \"const q = require('qrcode-terminal'); q.generate('exp://gl_pbqw-rualisher-8082.exp.direct', { small: true });\""
   },
   "private": true,
