@@ -15,6 +15,8 @@ import { Feather } from '@expo/vector-icons';
 import AnimatedIconButton from '../components/common/AnimatedIconButton';
 import AnimatedLangToggle from '../components/common/AnimatedLangToggle';
 import AnimatedDotty from '../components/common/AnimatedDotty';
+import SearchBar from '../components/common/SearchBar';
+import EmptyState from '../components/common/EmptyState';
 import AnimatedFolderCard from '../components/home/AnimatedFolderCard';
 import { MASCOT_TIPS } from '../constants/mascotTips';
 
@@ -146,23 +148,13 @@ export default function HomeScreen({
 
       {/* ИНПУТ СИМВОЛ # + ЖЕЛТАЯ КНОПКА + */}
       <View style={styles.searchRow}>
-        <View style={styles.inputBox}>
-          <Text style={styles.hashSymbol}>#</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder={t.searchPlaceholder}
-            placeholderTextColor="#71717A"
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-          {searchQuery.length > 0 ? (
-            <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <Feather name="x" size={18} color="#000" />
-            </TouchableOpacity>
-          ) : (
-            <Feather name="search" size={16} color="#000" style={{ opacity: 0.8 }} />
-          )}
-        </View>
+        <SearchBar
+          style={{ flex: 1, marginBottom: 0, marginRight: 10 }}
+          iconType="hash"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder={t.searchPlaceholder}
+        />
 
         {/* Желтая кнопка "+" открывает добавление */}
         <AnimatedIconButton
@@ -180,19 +172,16 @@ export default function HomeScreen({
         <Text style={styles.sectionCountText}>{filteredCards.length} {t.foldersCount}</Text>
       </View>
 
-      {/* СЕТКА ПАПОК 2 КОЛОНКИ ИЛИ EMPTY STATE С ТАЛИСМАНОМ */}
+      {/* СЕТКА ПАПОК 2 КОЛОНКИ ИЛИ ЕДИНЫЙ EMPTY STATE С DOTTY */}
       {filteredCards.length === 0 ? (
-        <View style={styles.emptyMascotBox}>
-          <AnimatedDotty size={64} animated={true} style={{ marginBottom: 12 }} />
-          <Text style={styles.emptyMascotTitle}>
-            {lang === 'uz' ? 'Hech narsa topilmadi' : 'Ничего не найдено'}
-          </Text>
-          <Text style={styles.emptyMascotSubtitle}>
-            {lang === 'uz' 
-              ? "Dotti qidirdi, lekin bunday mavzu yo'q. Qidiruv so'zini o'zgartiring!" 
-              : "Дотти искал, но такой темы нет. Попробуй изменить запрос!"}
-          </Text>
-        </View>
+        <EmptyState
+          title={lang === 'uz' ? 'Hech narsa topilmadi' : 'Ничего не найдено'}
+          subtitle={lang === 'uz'
+            ? "Dotti qidirdi, lekin bunday mavzu yo'q. Qidiruv so'zini o'zgartiring!"
+            : "Дотти искал, но такой темы нет. Попробуй изменить запрос!"}
+          onReset={searchQuery ? () => setSearchQuery('') : null}
+          resetLabel={lang === 'uz' ? "Qidiruvni tozalash" : "Сбросить поиск"}
+        />
       ) : (
         <View
           onLayout={(e) => {

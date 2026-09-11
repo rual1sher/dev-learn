@@ -39,3 +39,64 @@ Add the new entry to the top of the "История изменений" section 
 1. **Never break existing functionality** in `mobile-app` or `api`.
 2. **Always preserve comments and docstrings.**
 3. **Always log all modifications into [`CHANGELOG.md`](./CHANGELOG.md).**
+4. **Never duplicate existing components or code:** Check `mobile-app/src/components/common/` before creating any button, input, header, or animation.
+5. **Follow Clean & Performant Architecture standards** detailed below.
+
+---
+
+## 📐 UI Component Architecture & Folder Standardization Guide
+
+Каждый разработчик и AI обязан придерживаться единого стандарта при работе с папками и экранами в `mobile-app/src`:
+
+### 1. Структура директорий `mobile-app/src/`:
+```text
+mobile-app/src/
+├── components/
+│   ├── common/              # Универсальные переиспользуемые примитивы
+│   │   ├── ScreenHeader.js       # Единый нео-брутальный хедер для всех экранов
+│   │   ├── FolderMetaBanner.js   # Единый блок описания и метаданных папки
+│   │   ├── SearchBar.js          # Единая строка поиска с кнопкой сброса
+│   │   ├── EmptyState.js         # Единое пустое состояние с маскотом Dotty
+│   │   ├── AnimatedIconButton.js # Кнопка-иконка с физикой анимаций
+│   │   ├── AnimatedBrutalButton.js # Основная нео-брутальная кнопка с тактильным эффектом
+│   │   ├── AnimatedCopyButton.js # Тактильная кнопка копирования в буфер
+│   │   ├── AnimatedDotty.js      # Интерактивный анимированный талисман Dotty
+│   │   ├── AnimatedLangToggle.js # Переключатель языка RU / UZ
+│   │   └── LangSwitchToast.js    # Всплывающее уведомление о смене языка
+│   ├── collection/          # Компоненты папок коллекций (CollectionEntryCard)
+│   ├── lessons/             # Компоненты интерактивных уроков (LessonCard)
+│   ├── media/               # Компоненты медиатеки (MediaResourceCard)
+│   ├── home/                # Компоненты главного экрана (AnimatedFolderCard)
+│   └── blitz/               # Компоненты блиц-викторины (AnimatedChoiceButton)
+├── screens/                 # Контейнеры экранов (чистая логика без спагетти)
+│   ├── HomeScreen.js
+│   ├── CollectionScreen.js
+│   ├── LessonsCatalogScreen.js
+│   ├── MediaScreen.js
+│   ├── LessonScreen.js
+│   └── BlitzScreen.js
+├── modals/                  # Все модальные окна вынесены отдельно
+│   ├── AboutModal.js
+│   ├── AddNoteModal.js
+│   ├── SettingsModal.js
+│   ├── LessonsInfoModal.js
+│   └── MediaInfoModal.js
+├── constants/               # Данные, темы и переводы
+└── utils/                   # Утилиты (хелперы, clipboard, url-opening)
+```
+
+### 2. Единый шаблон экрана папки (Folder Screen Pattern):
+Каждый экран папки (`CollectionScreen`, `LessonsCatalogScreen`, `MediaScreen`, `BlitzScreen`) строится из одних и тех же стандартизированных строительных блоков:
+1. `<ScreenHeader title={...} badgeColor={...} onBack={...} rightAction={...} />` — заголовок с кнопкой назад и бейджем.
+2. `<FolderMetaBanner subtitle={...} desc={...} countText={...} tagText={...} />` — описание и метаданные.
+3. `<SearchBar value={query} onChangeText={setQuery} placeholder={...} />` — строка поиска с кнопкой мгновенного сброса.
+4. `<ScrollView>` со списком мемоизированных карточек (`React.memo`) или `<EmptyState />` с маскотом Dotty.
+
+### 3. Правила производительности (Performance Rules):
+1. **Мемоизация списков:** Все карточки (`CollectionEntryCard`, `LessonCard`, `MediaResourceCard`, `AnimatedFolderCard`) ОБЯЗАНЫ быть обернуты в `React.memo()`.
+2. **Коллбэки:** Обработчики кликов внутри экранов должны оборачиваться в `useCallback`, чтобы избежать лишних ре-рендеров дочерних карточек.
+3. **Фильтрация и поиск:** Все операции поиска и фильтрации массивов данных выполняются через `useMemo()`.
+4. **Контракт Neo-Brutalism:** 
+   - Рамки строго черные (`#000000`, толщина `2px - 2.5px`).
+   - Тени жесткие со смещением без размытия (`shadowOffset: { width: 3, height: 3 }`, `shadowOpacity: 1`, `shadowRadius: 0`).
+   - Скругления: `12px` (кнопки/инпуты), `16px` (карточки), `20px` (модалки).

@@ -21,6 +21,32 @@
 
 ## 📝 История изменений
 
+### [2026-09-11 14:35] Унификация экранов папок, разделение ответственности и стандартизация компонентов
+- **Автор:** AI (Antigravity) & Разработчик (alisher)
+- **Тип:** Архитектура | Рефакторинг | Производительность | UI/UX
+- **Затронутые модули/файлы:**
+  - `mobile-app/src/components/common/ScreenHeader.js` (новый унифицированный хедер)
+  - `mobile-app/src/components/common/FolderMetaBanner.js` (новый мета-баннер папки)
+  - `mobile-app/src/components/common/SearchBar.js` (новый унифицированный инпут поиска со сбросом)
+  - `mobile-app/src/components/common/EmptyState.js` (новое пустое состояние с маскотом Dotty)
+  - `mobile-app/src/components/collection/CollectionEntryCard.js` (мемоизированная карточка коллекции)
+  - `mobile-app/src/components/lessons/LessonCard.js` (мемоизированная карточка урока)
+  - `mobile-app/src/components/media/MediaResourceCard.js` (мемоизированная карточка медиатеки)
+  - `mobile-app/src/modals/LessonsInfoModal.js` (вынесенная модалка методологии уроков)
+  - `mobile-app/src/modals/MediaInfoModal.js` (вынесенная модалка открытых медиа-ресурсов)
+  - `mobile-app/src/screens/CollectionScreen.js` (рефакторинг с 587 до ~180 строк + добавлен поиск и EmptyState)
+  - `mobile-app/src/screens/LessonsCatalogScreen.js` (рефакторинг с 794 до ~120 строк)
+  - `mobile-app/src/screens/MediaScreen.js` (рефакторинг с 1001 до ~190 строк)
+  - `mobile-app/src/screens/HomeScreen.js` (переиспользование SearchBar и EmptyState)
+  - `AGENTS.md` (руководство по стандартизации UI-архитектуры и производительности)
+- **Что сделано:**
+  - Устранена хаотичность и разрозненность в дизайне и коде экранов папок: все экраны папок теперь приведены к единому стандарту (`ScreenHeader`, `FolderMetaBanner`, `SearchBar`, `EmptyState` с Dotty).
+  - Ликвидировано массовое дублирование стилей и кода (включая копипаст стилей `mediaCard` в уроках).
+  - Монолитные файлы экранов сокращены в 3–5 раз за счет выделения мемоизированных компонентов карточек (`React.memo`) и модальных окон в каталог `modals/`.
+  - В `CollectionScreen` добавлена долгожданная функциональность поиска по шпаргалкам, терминальным командам и коду.
+  - Закреплены строгие правила чистого кода и запрет дублирования компонентов в `AGENTS.md`.
+- **Архитектурные последствия:** Кодовая база клиента переведена на модульную компонентную архитектуру с высокой производительностью рендеринга (мемоизация списков) и нулевым дублированием UI-примитивов.
+
 ### [2026-09-11 14:10] Редизайн BlitzScreen в стиле Neo-Brutalist Arcade HUD и устранение пустого пространства
 - **Автор:** AI (Antigravity) & Разработчик (alisher)
 - **Тип:** Рефакторинг | Новая фича | UI/UX
