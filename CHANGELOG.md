@@ -21,6 +21,15 @@
 
 ## 📝 История изменений
 
+### [2026-09-11 11:56] Отключение десктопного GUI-отладчика на headless сервере (EXPO_UNSTABLE_HEADLESS=1)
+- **Автор:** AI (Antigravity) & Разработчик (alisher)
+- **Тип:** Багфикс | Развертывание
+- **Затронутые модули/файлы:** `mobile-app/package.json`, `ecosystem.config.js`, `CHANGELOG.md`
+- **Что сделано:**
+  - Во все скрипты запуска туннеля в `mobile-app/package.json` (`tunnel`, `start:tunnel`, `tunnel:prod`, `tunnel:web`) и в `ecosystem.config.js` добавлена переменная окружения `EXPO_UNSTABLE_HEADLESS=1`.
+  - Устранен вызов `@react-native/debugger-shell` (Electron-приложения `react-native-devtools`), приводивший к ошибке отсутствия графической библиотеки `libatk-1.0.so.0` на Linux VPS серверах без десктопного окружения.
+- **Архитектурные последствия:** Metro Bundler с туннелем ngrok запускается на headless серверах без ошибок, не требуя установки оконных библиотек Electron.
+
 ### [2026-09-11 11:36] Единые команды для одновременного запуска API, Mobile и Web (dev:all, dev:all:tunnel, prod:all)
 - **Автор:** AI (Antigravity) & Разработчик (alisher)
 - **Тип:** Новая фича | DX (Developer Experience)

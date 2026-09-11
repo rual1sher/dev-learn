@@ -49,10 +49,12 @@ module.exports = {
       env: {
         NODE_ENV: 'development',
         CI: '1',
+        EXPO_UNSTABLE_HEADLESS: '1',
       },
       env_production: {
         NODE_ENV: 'production',
         CI: '1',
+        EXPO_UNSTABLE_HEADLESS: '1',
       },
       // Логирование (QR-код и ссылка exp:// пишутся в pm2-tunnel-out.log)
       error_file: 'logs/pm2-tunnel-error.log',
