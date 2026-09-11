@@ -244,9 +244,15 @@ npm run install:all
   npm run dev:mobile
   ```
 
-* **Глобальный тоннель для телефона (если ПК и смартфон в разных Wi-Fi сетях):**
+* **Запуск мобильного приложения с тоннелем (`--tunnel` для Expo Go через интернет):**
   ```bash
-  cd mobile-app && npx expo start --tunnel
+  # Интерактивный запуск из корня проекта:
+  npm run dev:mobile:tunnel
+  # Или запуск из директории mobile-app:
+  cd mobile-app && npm run tunnel
+
+  # Запуск в оптимизированном продакшн-режиме:
+  npm run tunnel:prod
   ```
 
 ---

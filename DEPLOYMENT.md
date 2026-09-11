@@ -121,11 +121,25 @@ pm2 startup
 
 Команды управления PM2:
 ```bash
-pm2 status               # Статус процесса
-npm run pm2:logs         # Логи в реальном времени
-pm2 reload devlearn-api  # Мягкий перезапуск (zero-downtime)
-npm run pm2:stop         # Остановка
+pm2 status                  # Статус процессов
+npm run pm2:logs            # Логи API в реальном времени
+npm run pm2:start:tunnel    # Запуск Expo Go Tunnel в фоне через PM2
+npm run pm2:logs:tunnel     # Просмотр QR-кода и ссылки Expo Tunnel
+pm2 reload devlearn-api     # Мягкий перезапуск API
+npm run pm2:stop            # Остановка всех процессов
 ```
+
+#### Запуск мобильного Expo Go Tunnel на сервере:
+Если необходимо раздать мобильное приложение для Expo Go через интернет с боевого сервера:
+- **Через PM2 (в фоне с авторестартом):**
+  ```bash
+  npm run pm2:start:tunnel
+  npm run pm2:logs:tunnel   # покажет QR-код и URL вида exp://...ngrok-free.app
+  ```
+- **Или интерактивно в консоли / tmux:**
+  ```bash
+  npm run tunnel:prod       # запуск в оптимизированном продакшн-режиме (--no-dev --minify)
+  ```
 
 ### 3. Настройка Nginx Reverse Proxy
 ```bash

@@ -36,5 +36,32 @@ module.exports = {
       kill_timeout: 5000,
       wait_ready: false,
     },
+    {
+      name: 'devlearn-mobile-tunnel',
+      script: 'node_modules/expo/bin/cli',
+      args: 'start --tunnel',
+      cwd: './mobile-app',
+      instances: 1,
+      exec_mode: 'fork',
+      autorestart: true,
+      watch: false,
+      max_memory_restart: '500M',
+      env: {
+        NODE_ENV: 'development',
+        CI: '1',
+      },
+      env_production: {
+        NODE_ENV: 'production',
+        CI: '1',
+      },
+      // Логирование (QR-код и ссылка exp:// пишутся в pm2-tunnel-out.log)
+      error_file: 'logs/pm2-tunnel-error.log',
+      out_file: 'logs/pm2-tunnel-out.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+      merge_logs: true,
+      time: true,
+      kill_timeout: 5000,
+      wait_ready: false,
+    },
   ],
 };

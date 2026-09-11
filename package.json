@@ -8,13 +8,20 @@
     "dev": "concurrently --names \"API,APP\" --prefix-colors \"cyan,yellow\" \"npm run dev --prefix api\" \"npm run start --prefix mobile-app\"",
     "dev:api": "npm run dev --prefix api",
     "dev:mobile": "npm run start --prefix mobile-app",
+    "dev:mobile:tunnel": "npm run tunnel --prefix mobile-app",
+    "mobile:tunnel": "npm run tunnel --prefix mobile-app",
+    "dev:tunnel": "concurrently --names \"API,APP\" --prefix-colors \"cyan,yellow\" \"npm run dev --prefix api\" \"npm run tunnel --prefix mobile-app\"",
+    "tunnel:prod": "npm run tunnel:prod --prefix mobile-app",
     "dev:web": "npm run web --prefix mobile-app",
     "build:web": "npm run build:web --prefix mobile-app",
     "start:prod": "NODE_ENV=production node api/server.js",
     "check:prod": "node scripts/prod-check.js",
     "pm2:start": "pm2 start ecosystem.config.js --env production",
+    "pm2:start:api": "pm2 start ecosystem.config.js --only devlearn-api --env production",
+    "pm2:start:tunnel": "pm2 start ecosystem.config.js --only devlearn-mobile-tunnel --env production",
     "pm2:stop": "pm2 stop ecosystem.config.js",
-    "pm2:logs": "pm2 logs devlearn-api"
+    "pm2:logs": "pm2 logs devlearn-api",
+    "pm2:logs:tunnel": "pm2 logs devlearn-mobile-tunnel"
   },
   "devDependencies": {
     "concurrently": "^9.2.4"

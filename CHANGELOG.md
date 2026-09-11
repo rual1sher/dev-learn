@@ -21,6 +21,18 @@
 
 ## 📝 История изменений
 
+### [2026-09-11 11:21] Добавление запуска мобильного приложения с флагом --tunnel для Expo Go
+- **Автор:** AI (Antigravity) & Разработчик (alisher)
+- **Тип:** Новая фича | Развертывание | Зависимости
+- **Затронутые модули/файлы:** `mobile-app/package.json`, `package.json`, `ecosystem.config.js`, `DEPLOYMENT.md`, `README.md`, `CHANGELOG.md`
+- **Что сделано:**
+  - В `mobile-app/package.json` добавлены скрипты `tunnel` (`expo start --tunnel`), `start:tunnel` и `tunnel:prod` (`expo start --tunnel --no-dev --minify`).
+  - Пакет `@expo/ngrok` перенесен из `devDependencies` в `dependencies` в `mobile-app/package.json`, гарантируя его наличие при продакшн-установке зависимостей на сервере (`npm install --omit=dev`).
+  - В корневом `package.json` добавлены команды быстрого доступа: `npm run dev:mobile:tunnel`, `npm run mobile:tunnel`, `npm run dev:tunnel` (одновременный старт API + Expo Tunnel), `npm run tunnel:prod`, а также команды PM2 (`pm2:start:tunnel`, `pm2:logs:tunnel`).
+  - В `ecosystem.config.js` добавлен процесс `devlearn-mobile-tunnel` для демонизации раздачи Expo Go через PM2 в production.
+  - В `DEPLOYMENT.md` и `README.md` описаны инструкции по запуску тоннеля и считыванию QR-кода на сервере.
+- **Архитектурные последствия:** Обеспечена возможность запускать Expo Metro bundler на удаленном VPS/сервере в проде и подключаться к приложению через приложение Expo Go из интернета (через ngrok-туннель) без необходимости быть в одной Wi-Fi сети с сервером.
+
 ### [2026-09-10 16:44] Полное удаление сборки APK: удаление eas.json и скрипта build:apk
 - **Автор:** AI (Gemini) & Разработчик (alisher)
 - **Тип:** Архитектура | Рефакторинг
