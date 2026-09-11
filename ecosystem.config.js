@@ -6,6 +6,14 @@
  * ==============================================================================
  */
 
+try {
+  require('dotenv').config();
+} catch (_) {
+  try {
+    require('./api/node_modules/dotenv').config();
+  } catch (_) {}
+}
+
 module.exports = {
   apps: [
     {
@@ -49,10 +57,12 @@ module.exports = {
       env: {
         NODE_ENV: 'development',
         EXPO_UNSTABLE_HEADLESS: '1',
+        EXPO_TOKEN: process.env.EXPO_TOKEN,
       },
       env_production: {
         NODE_ENV: 'production',
         EXPO_UNSTABLE_HEADLESS: '1',
+        EXPO_TOKEN: process.env.EXPO_TOKEN,
       },
       // Логирование (QR-код и ссылка exp:// пишутся в pm2-tunnel-out.log)
       error_file: 'logs/pm2-tunnel-error.log',
