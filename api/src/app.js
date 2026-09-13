@@ -5,6 +5,7 @@ const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
 const {
   CORS_ORIGIN,
   NODE_ENV,
@@ -73,20 +74,78 @@ app.use('/api', apiLimiter);
 // 7. Подключение API маршрутов
 app.use('/api', apiRoutes);
 
-// 8. Раздача собранного Web-клиента (React Native Web SPA) в Production
+// 7.5. В режиме разработки динамически проксируем запросы в Metro Dev Server (8081)
+if (NODE_ENV !== 'production') {
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+
+    const proxyReq = http.request(
+      {
+        hostname: '127.0.0.1',
+        port: 8081,
+        path: req.url,
+        method: req.method,
+        headers: {
+          ...req.headers,
+          host: 'localhost:8081',
+        },
+        timeout: 1500,
+      },
+      (proxyRes) => {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        res.writeHead(proxyRes.statusCode, proxyRes.headers);
+        proxyRes.pipe(res);
+      }
+    );
+
+    proxyReq.on('error', () => {
+      // Если Metro Bundler не запущен, переходим к отдаче статического билда
+      next();
+    });
+
+    proxyReq.on('timeout', () => {
+      proxyReq.destroy();
+      next();
+    });
+
+    if (req.readable) {
+      req.pipe(proxyReq);
+    } else {
+      proxyReq.end();
+    }
+  });
+}
+
+// 8. Раздача собранного Web-клиента (React Native Web SPA)
 const hasStaticWebBuild = SERVE_STATIC && fs.existsSync(STATIC_PATH) && fs.existsSync(path.join(STATIC_PATH, 'index.html'));
 
 if (hasStaticWebBuild) {
-  // Статические ресурсы (js, css, шрифты, картинки) с кэшированием
+  // Статические ресурсы (js, css, шрифты, картинки)
   app.use(
     express.static(STATIC_PATH, {
       maxAge: NODE_ENV === 'production' ? '7d' : 0,
+      etag: NODE_ENV === 'production',
+      lastModified: NODE_ENV === 'production',
+      setHeaders: (res) => {
+        if (NODE_ENV !== 'production') {
+          res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+          res.setHeader('Pragma', 'no-cache');
+          res.setHeader('Expires', '0');
+        }
+      },
     })
   );
 
-  // SPA Fallback: все GET-запросы не к /api направляются на index.html (совместимо с Express 5)
+  // SPA Fallback: все GET-запросы не к /api направляются на index.html
   app.use((req, res, next) => {
     if (req.method === 'GET' && !req.path.startsWith('/api')) {
+      if (NODE_ENV !== 'production') {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+      }
       return res.sendFile(path.join(STATIC_PATH, 'index.html'));
     }
     return next();

@@ -13,6 +13,7 @@ export default function AnimatedBrutalButton({
   onPressIn,
   onPressOut,
   style,
+  containerStyle,
   animationType = 'hop', // 'hop' | 'wiggle' | 'twitch' | 'bounce'
   activeOpacity = 0.85,
   disabled = false,
@@ -138,14 +139,17 @@ export default function AnimatedBrutalButton({
 
   return (
     <Animated.View
-      style={{
-        transform: [
-          { translateX: pressX },
-          { translateY: Animated.add(pressY, hopY) },
-          { scale: scaleAnim },
-          { rotate: rotateInterpolation },
-        ],
-      }}
+      style={[
+        {
+          transform: [
+            { translateX: pressX },
+            { translateY: Animated.add(pressY, hopY) },
+            { scale: scaleAnim },
+            { rotate: rotateInterpolation },
+          ],
+        },
+        containerStyle,
+      ]}
     >
       <TouchableOpacity
         activeOpacity={activeOpacity}

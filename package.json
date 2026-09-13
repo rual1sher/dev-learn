@@ -17,7 +17,7 @@
     "dev:web": "npm run web --prefix mobile-app",
     "build:web": "npm run build:web --prefix mobile-app",
     "prod:all": "concurrently --names \"API+WEB,MOBILE\" --prefix-colors \"cyan,magenta\" \"npm run start:prod\" \"npm run tunnel:prod\"",
-    "start:prod": "NODE_ENV=production node api/server.js",
+    "start:prod": "npm run build:web && NODE_ENV=production node api/server.js",
     "check:prod": "node scripts/prod-check.js",
     "pm2:start": "pm2 start ecosystem.config.js --env production",
     "pm2:start:api": "pm2 start ecosystem.config.js --only devlearn-api --env production",

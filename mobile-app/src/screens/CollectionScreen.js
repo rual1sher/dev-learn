@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Platform } from 'react-native';
 import ScreenHeader from '../components/common/ScreenHeader';
 import FolderMetaBanner from '../components/common/FolderMetaBanner';
 import SearchBar from '../components/common/SearchBar';
@@ -238,7 +238,7 @@ export default function CollectionScreen({
 const styles = StyleSheet.create({
   collectionScreen: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: Platform.OS === 'web' ? 36 : 20,
     backgroundColor: '#FFFFFF',
   },
   addBtn: {

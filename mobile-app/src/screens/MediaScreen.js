@@ -1,21 +1,16 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-} from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import { OPEN_MEDIA_RESOURCES } from '../constants/mediaResources';
-import { handleOpenUrl } from '../utils/helpers';
-import ScreenHeader from '../components/common/ScreenHeader';
-import FolderMetaBanner from '../components/common/FolderMetaBanner';
-import SearchBar from '../components/common/SearchBar';
-import EmptyState from '../components/common/EmptyState';
-import AnimatedIconButton from '../components/common/AnimatedIconButton';
-import AnimatedBrutalButton from '../components/common/AnimatedBrutalButton';
-import MediaResourceCard from '../components/media/MediaResourceCard';
-import MediaInfoModal from '../modals/MediaInfoModal';
+import React, { useState, useMemo, useCallback } from "react";
+import { StyleSheet, View, Text, ScrollView, Platform } from "react-native";
+import { Feather } from "@expo/vector-icons";
+import { OPEN_MEDIA_RESOURCES } from "../constants/mediaResources";
+import { handleOpenUrl } from "../utils/helpers";
+import ScreenHeader from "../components/common/ScreenHeader";
+import FolderMetaBanner from "../components/common/FolderMetaBanner";
+import SearchBar from "../components/common/SearchBar";
+import EmptyState from "../components/common/EmptyState";
+import AnimatedIconButton from "../components/common/AnimatedIconButton";
+import AnimatedBrutalButton from "../components/common/AnimatedBrutalButton";
+import MediaResourceCard from "../components/media/MediaResourceCard";
+import MediaInfoModal from "../modals/MediaInfoModal";
 
 /**
  * MediaScreen — экран медиатеки (видеокурсы, подкасты, открытые лекции).
@@ -24,24 +19,25 @@ import MediaInfoModal from '../modals/MediaInfoModal';
 export default function MediaScreen({
   onBack,
   onCopySnippet,
-  lang = 'ru',
+  lang = "ru",
   t = {},
 }) {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [mediaFilter, setMediaFilter] = useState('all');
-  const [mediaLangFilter, setMediaLangFilter] = useState('all');
-  const [mediaSearch, setMediaSearch] = useState('');
+  const [mediaFilter, setMediaFilter] = useState("all");
+  const [mediaLangFilter, setMediaLangFilter] = useState("all");
+  const [mediaSearch, setMediaSearch] = useState("");
 
-  const isUz = lang === 'uz';
+  const isUz = lang === "uz";
 
   const filteredMediaResources = useMemo(() => {
     return OPEN_MEDIA_RESOURCES.filter((item) => {
-      const matchesFilter = mediaFilter === 'all' || item.category === mediaFilter;
+      const matchesFilter =
+        mediaFilter === "all" || item.category === mediaFilter;
       const matchesLang =
-        mediaLangFilter === 'all' ||
+        mediaLangFilter === "all" ||
         item.langCode === mediaLangFilter ||
-        (mediaLangFilter === 'ru' && item.langCode === 'ru_en') ||
-        (mediaLangFilter === 'en' && item.langCode === 'ru_en');
+        (mediaLangFilter === "ru" && item.langCode === "ru_en") ||
+        (mediaLangFilter === "en" && item.langCode === "ru_en");
 
       const query = mediaSearch.toLowerCase().trim();
       if (!query) return matchesFilter && matchesLang;
@@ -57,21 +53,24 @@ export default function MediaScreen({
     });
   }, [mediaFilter, mediaLangFilter, mediaSearch]);
 
-  const handleOpenResource = useCallback((url) => {
-    handleOpenUrl(url, lang);
-  }, [lang]);
+  const handleOpenResource = useCallback(
+    (url) => {
+      handleOpenUrl(url, lang);
+    },
+    [lang],
+  );
 
   const handleResetFilters = useCallback(() => {
-    setMediaSearch('');
-    setMediaFilter('all');
-    setMediaLangFilter('all');
+    setMediaSearch("");
+    setMediaFilter("all");
+    setMediaLangFilter("all");
   }, []);
 
   return (
     <View style={styles.container}>
       {/* 1. ЕДИНЫЙ НЕО-БРУТАЛЬНЫЙ ХЕДЕР ПАПКИ */}
       <ScreenHeader
-        title={t.mediaScreenTitle || (isUz ? 'Media & Video' : 'Медиа & Видео')}
+        title={t.mediaScreenTitle || (isUz ? "Media & Video" : "Медиа & Видео")}
         badgeColor="#38BDF8"
         onBack={onBack}
         rightAction={
@@ -87,11 +86,18 @@ export default function MediaScreen({
 
       {/* 2. ЕДИНЫЙ МЕТА-БАННЕР ПАПКИ */}
       <FolderMetaBanner
-        subtitle={isUz ? "Ochiq video va podkastlar" : "Открытые курсы, видео и подкасты"}
-        desc={t.mediaScreenSubtitle || (isUz
-          ? "YouTube, Habr va IT hamjamiyatining eng sara bepul media resurslari."
-          : "Лучшие бесплатные видеокурсы, подкасты и дайджесты от экспертов индустрии.")}
-        countText={`${OPEN_MEDIA_RESOURCES.length} ${t.mediaCount || (isUz ? 'resurslar' : 'материалов')}`}
+        subtitle={
+          isUz
+            ? "Ochiq video va podkastlar"
+            : "Открытые курсы, видео и подкасты"
+        }
+        desc={
+          t.mediaScreenSubtitle ||
+          (isUz
+            ? "YouTube, Habr va IT hamjamiyatining eng sara bepul media resurslari."
+            : "Лучшие бесплатные видеокурсы, подкасты и дайджесты от экспертов индустрии.")
+        }
+        countText={`${OPEN_MEDIA_RESOURCES.length} ${t.mediaCount || (isUz ? "resurslar" : "материалов")}`}
         tagText="MEDIA"
         tagColor="#38BDF8"
       />
@@ -100,7 +106,12 @@ export default function MediaScreen({
       <SearchBar
         value={mediaSearch}
         onChangeText={setMediaSearch}
-        placeholder={t.mediaSearchPlaceholder || (isUz ? "Video va kurslarni qidirish..." : "Поиск по видео и курсам...")}
+        placeholder={
+          t.mediaSearchPlaceholder ||
+          (isUz
+            ? "Video va kurslarni qidirish..."
+            : "Поиск по видео и курсам...")
+        }
         style={{ marginBottom: 10 }}
       />
 
@@ -112,21 +123,38 @@ export default function MediaScreen({
           contentContainerStyle={styles.filterRow}
         >
           {[
-            { key: 'all', label: t.allTab || (isUz ? 'Barchasi' : 'Все'), icon: 'grid' },
-            { key: 'course', label: t.coursesTab || (isUz ? 'Kurslar' : 'Курсы'), icon: 'book-open' },
-            { key: 'video', label: t.videosTab || (isUz ? 'Videolar' : 'Видео'), icon: 'video' },
-            { key: 'podcast', label: t.podcastsTab || (isUz ? 'Podkastlar' : 'Подкасты'), icon: 'mic' },
-            { key: 'digest', label: t.newsTab || (isUz ? 'Dayjestlar' : 'Дайджесты'), icon: 'rss' },
+            {
+              key: "all",
+              label: t.allTab || (isUz ? "Barchasi" : "Все"),
+              icon: "grid",
+            },
+            {
+              key: "course",
+              label: t.coursesTab || (isUz ? "Kurslar" : "Курсы"),
+              icon: "book-open",
+            },
+            {
+              key: "video",
+              label: t.videosTab || (isUz ? "Videolar" : "Видео"),
+              icon: "video",
+            },
+            {
+              key: "podcast",
+              label: t.podcastsTab || (isUz ? "Podkastlar" : "Подкасты"),
+              icon: "mic",
+            },
+            {
+              key: "digest",
+              label: t.newsTab || (isUz ? "Dayjestlar" : "Дайджесты"),
+              icon: "rss",
+            },
           ].map((f) => {
             const isActive = mediaFilter === f.key;
             return (
               <AnimatedBrutalButton
                 key={f.key}
                 animationType="hop"
-                style={[
-                  styles.filterPill,
-                  isActive && styles.filterPillActive,
-                ]}
+                style={[styles.filterPill, isActive && styles.filterPillActive]}
                 onPress={() => setMediaFilter(f.key)}
               >
                 <Feather
@@ -157,10 +185,14 @@ export default function MediaScreen({
           contentContainerStyle={styles.filterRow}
         >
           {[
-            { key: 'all', label: t.allLangFilter || (isUz ? 'Barcha tillar' : 'Все языки'), icon: 'globe' },
-            { key: 'uz', label: "O'zbekcha", icon: null },
-            { key: 'ru', label: 'Русский', icon: null },
-            { key: 'en', label: 'English', icon: null },
+            {
+              key: "all",
+              label: t.allLangFilter || (isUz ? "Barcha tillar" : "Все языки"),
+              icon: "globe",
+            },
+            { key: "uz", label: "O'zbekcha", icon: null },
+            { key: "ru", label: "Русский", icon: null },
+            { key: "en", label: "English", icon: null },
           ].map((lf) => {
             const isActive = mediaLangFilter === lf.key;
             return (
@@ -202,8 +234,16 @@ export default function MediaScreen({
       >
         {filteredMediaResources.length === 0 ? (
           <EmptyState
-            title={t.emptyMediaTitle || (isUz ? "Resurslar topilmadi" : "Материалов не найдено")}
-            subtitle={t.emptyMediaDesc || (isUz ? "Filtr yoki qidiruv so'zini o'zgartirib ko'ring." : "Попробуйте изменить категорию, язык или поисковый запрос.")}
+            title={
+              t.emptyMediaTitle ||
+              (isUz ? "Resurslar topilmadi" : "Материалов не найдено")
+            }
+            subtitle={
+              t.emptyMediaDesc ||
+              (isUz
+                ? "Filtr yoki qidiruv so'zini o'zgartirib ko'ring."
+                : "Попробуйте изменить категорию, язык или поисковый запрос.")
+            }
             onReset={handleResetFilters}
             resetLabel={isUz ? "Filtrlarni tozalash" : "Сбросить фильтры"}
           />
@@ -233,19 +273,19 @@ export default function MediaScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    backgroundColor: '#FFFFFF',
+    paddingHorizontal: Platform.OS === "web" ? 36 : 20,
+    backgroundColor: "#FFFFFF",
   },
   infoBtn: {
     width: 44,
     height: 44,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     borderRadius: 12,
     borderWidth: 2.5,
-    borderColor: '#000000',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000000',
+    borderColor: "#000000",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000000",
     shadowOffset: { width: 3, height: 3 },
     shadowOpacity: 1,
     shadowRadius: 0,
@@ -258,62 +298,62 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   filterRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
     paddingVertical: 2,
   },
   filterPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: '#000000',
-    shadowColor: '#000000',
+    borderColor: "#000000",
+    shadowColor: "#000000",
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 1,
     shadowRadius: 0,
     elevation: 2,
   },
   filterPillActive: {
-    backgroundColor: '#38BDF8',
+    backgroundColor: "#38BDF8",
   },
   filterPillText: {
     fontSize: 11,
-    fontWeight: '800',
-    color: '#000000',
+    fontWeight: "800",
+    color: "#000000",
   },
   filterPillTextActive: {
-    fontWeight: '900',
+    fontWeight: "900",
   },
   langFilterPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
     paddingHorizontal: 9,
     paddingVertical: 5,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: '#000000',
-    shadowColor: '#000000',
+    borderColor: "#000000",
+    shadowColor: "#000000",
     shadowOffset: { width: 1.5, height: 1.5 },
     shadowOpacity: 1,
     shadowRadius: 0,
     elevation: 1,
   },
   langFilterPillActive: {
-    backgroundColor: '#FEF08A',
+    backgroundColor: "#FEF08A",
   },
   langFilterPillText: {
     fontSize: 10,
-    fontWeight: '800',
-    color: '#000000',
+    fontWeight: "800",
+    color: "#000000",
   },
   langFilterPillTextActive: {
-    fontWeight: '900',
+    fontWeight: "900",
   },
   scrollContent: {
     paddingBottom: 36,

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Platform } from 'react-native';
 import { LESSONS_DATA } from '../constants/lessonsData';
 import ScreenHeader from '../components/common/ScreenHeader';
 import FolderMetaBanner from '../components/common/FolderMetaBanner';
@@ -124,7 +124,7 @@ export default function LessonsCatalogScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: Platform.OS === 'web' ? 36 : 20,
     backgroundColor: '#FFFFFF',
   },
   infoBtn: {

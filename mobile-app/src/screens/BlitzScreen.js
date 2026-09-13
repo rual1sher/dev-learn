@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
   },
   screenContent: {
     flexGrow: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: Platform.OS === 'web' ? 36 : 20,
     paddingTop: 12,
     paddingBottom: 28,
     alignItems: 'center',

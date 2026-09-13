@@ -25,6 +25,29 @@ const server = app.listen(PORT, HOST, () => {
   }
 });
 
+// 2.5. Проксирование WebSocket для Hot Module Reloading (HMR) из Metro в development
+if (NODE_ENV !== 'production') {
+  const net = require('net');
+  server.on('upgrade', (req, socket, head) => {
+    if (req.url && req.url.startsWith('/api')) return;
+    const metroSocket = net.connect(8081, '127.0.0.1', () => {
+      metroSocket.write(
+        `${req.method} ${req.url} HTTP/1.1\r\n` +
+        Object.entries(req.headers)
+          .map(([k, v]) => `${k}: ${v}`)
+          .join('\r\n') +
+        '\r\n\r\n'
+      );
+      metroSocket.write(head);
+      socket.pipe(metroSocket);
+      metroSocket.pipe(socket);
+    });
+    metroSocket.on('error', () => {
+      socket.destroy();
+    });
+  });
+}
+
 // 3. Обработка Graceful Shutdown (корректное завершение процесса)
 let isShuttingDown = false;
 function handleShutdown(signal) {

@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 860,
     alignSelf: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: Platform.OS === 'web' ? 36 : 20,
     paddingBottom: 20,
     paddingTop: 10,
   },

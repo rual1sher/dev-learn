@@ -81,6 +81,7 @@ function MediaResourceCard({ item, lang = 'ru', onOpenUrl, onCopyUrl }) {
           <AnimatedBrutalButton
             animationType="hop"
             style={styles.openBtn}
+            containerStyle={{ flex: 1 }}
             onPress={() => onOpenUrl(item.url)}
           >
             <View style={styles.openBtnInner}>
